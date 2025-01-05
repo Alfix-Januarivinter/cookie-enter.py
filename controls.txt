@@ -1,0 +1,8 @@
+controls in cookie enter game:
+if want to the cookie menu enter: cookies
+  if want cookies in cookie menu hit: enter
+  if want to esc cookie menu enter: exit
+if want to go to upgrade menu enter: upgrades
+  if want to upgrade in upgrade menu enter: "the number of how much you want to add to your miltipluier"
+  if want to esc upgrade menu enter: exit
+if want to exit game enter: exit
