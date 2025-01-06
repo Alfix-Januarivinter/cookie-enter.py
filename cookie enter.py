@@ -1,4 +1,5 @@
-#version 1.0.0 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+#version 1.0.1 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+exit = False
 cookies = 0
 cookie_multipluier = 1
 print("welcome to cookie enter")
