@@ -1,25 +1,20 @@
-#version 1.0.2 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
-exit = False
+#version 1.0.3 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
 cookies = 0
 cookie_multi = 1
 print("welcome to cookie enter")
-while exit == False:
-    exit = False
-    exit1 = False
-    exit2 = False
-    what_todo = ""
+while True:
     print(cookies)
     what_todo = input("Menu: ")
     if what_todo == "enter":
-        while exit1 == False:
+        while True:
             print(cookies)
-            enter = input("Cookie: ")
+            enter = input(": ")
             if enter == "exit":
-                exit1 = True
+                break
             else:
                 cookies = cookies + cookie_multi
     elif what_todo == "upgrade":
-        while exit2 == False:
+        while True:
             print("cookies = " + str(cookies))
             print("cookie multiplier = " + str(cookie_multi))
             print("*+1 = 100 *+2 = 200 *+5 = 450 *+10 = 800 *+20 = 1400 *+50 = 3000 *+100 = 4500")
@@ -67,11 +62,11 @@ while exit == False:
                 else:
                     print("to little cookies")
             elif up == "exit":
-                exit2 = True
+                break
             else:
                 print("wrong input")
     elif what_todo == "exit":
-        exit = True
+        break
     else:
         print("wrong input")
 print("bye")
