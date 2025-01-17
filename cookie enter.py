@@ -1,4 +1,4 @@
-#version 1.0.2 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.p
+#version 1.0.2 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
 exit = False
 cookies = 0
 cookie_multi = 1
