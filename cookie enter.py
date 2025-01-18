@@ -1,71 +1,72 @@
-#version 1.0.3 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
-cookies = 0
-cookie_multi = 1
-print("welcome to cookie enter")
+#version 1.0.4 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+#1.0.4 c = Cookies b = Cookie_Multi a = what_todo u = up
+c = 0
+b = 1
+print("welcome to Cookie enter")
 while True:
-    print(cookies)
-    what_todo = input("Menu: ")
-    if what_todo == "enter":
+    print(c)
+    a = input("Menu: ")
+    if a == "enter":
         while True:
-            print(cookies)
+            print(c)
             enter = input(": ")
             if enter == "exit":
                 break
             else:
-                cookies = cookies + cookie_multi
-    elif what_todo == "upgrade":
+                c = c + b
+    elif a == "upgrade":
         while True:
-            print("cookies = " + str(cookies))
-            print("cookie multiplier = " + str(cookie_multi))
+            print("cookies = " + str(c))
+            print("cookie multiplier = " + str(b))
             print("*+1 = 100 *+2 = 200 *+5 = 450 *+10 = 800 *+20 = 1400 *+50 = 3000 *+100 = 4500")
-            up = input("Upgrade: ")
-            if up == "1":
-                if cookies >= 100:
-                    cookies = cookies - 100
-                    cookie_multi = cookie_multi + 1
+            u = input("Upgrade: ")
+            if u == "1":
+                if c >= 100:
+                    c = c - 100
+                    b = b + 1
                 else:
                     print("to little cookies")
-            elif up == "2":
-                if cookies >= 200:
-                    cookies = cookies - 200
-                    cookie_multi = cookie_multi + 2
+            elif u == "2":
+                if c >= 200:
+                    c = c - 200
+                    b = b + 2
                 else:
                     print("to little cookies")
-            elif up == "5":
-                if cookies >= 450:
-                    cookies = cookies - 450
-                    cookie_multi = cookie_multi + 5
+            elif u == "5":
+                if c >= 450:
+                    c = c - 450
+                    b = b + 5
                 else:
                     print("to little cookies")
-            elif up == "10":
-                if cookies >= 800:
-                    cookies = cookies - 800
-                    cookie_multi = cookie_multi + 10
+            elif u == "10":
+                if c >= 800:
+                    c = c - 800
+                    b = b + 10
                 else:
                     print("to little cookies")
-            elif up == "20":
-                if cookies >= 1400:
-                    cookies = cookies - 1400
-                    cookie_multi = cookie_multi + 20
+            elif u == "20":
+                if c >= 1400:
+                    c = c - 1400
+                    b = b + 20
                 else:
                     print("to little cookies")
-            elif up == "50":
-                if cookies >= 3000:
-                    cookies = cookies - 3000
-                    cookie_multi = cookie_multi + 50
+            elif u == "50":
+                if c >= 3000:
+                    c = c - 3000
+                    b = b + 50
                 else:
                     print("to little cookies")
-            elif up == "100":
-                if cookies >= 4500:
-                    cookies = cookies - 4500
-                    cookie_multi = cookie_multi + 100
+            elif u == "100":
+                if c >= 4500:
+                    c = c - 4500
+                    b = b + 100
                 else:
                     print("to little cookies")
-            elif up == "exit":
+            elif u == "exit":
                 break
             else:
                 print("wrong input")
-    elif what_todo == "exit":
+    elif a == "exit":
         break
     else:
         print("wrong input")
