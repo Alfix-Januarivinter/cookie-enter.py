@@ -1,7 +1,7 @@
-#version 1.0.5 (prerelease) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+#version 1.0.5 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
 c = 0
 b = 1
-print("welcome to Cookie enter!")
+print("Welcome to Cookie enter!")
 while True:
     print(c)
     a = input("Menu: ")
@@ -17,54 +17,64 @@ while True:
         while True:
             print("cookies = " + str(c))
             print("cookie multiplier = " + str(b))
-            print("*+1 = 100 *+2 = 200 *+5 = 450 *+10 = 800 *+20 = 1400 *+50 = 3000 *+100 = 4500 *+1000 = 45000")
+            print("*+1 = 100 *+2 = 200 *+5 = 450 *+10 = 800 *+20 = 1400 *+50 = 3000 *+100 = 4500")
             u = input("Upgrade: ")
+            h = int(input("Upgrade times: "))
+            if h < 0:
+                h = 0
+            h1 = h * 100
+            h2 = h * 200
+            d2 = h * 2
+            h3 = h * 450
+            d3 = h * 5
+            h4 = h * 800
+            d4 = h * 10
+            h5 = h * 1400
+            d5 = h * 20
+            h6 = h * 3000
+            d6 = h * 50
+            h7 = h * 4500
+            d7 = h * 100
             if u == "1":
-                if c >= 100:
-                    c = c - 100
-                    b = b + 1
+                if c >= h1:
+                    c = c - h1
+                    b = b + h
                 else:
                     print("to little cookies!")
             elif u == "2":
-                if c >= 200:
-                    c = c - 200
-                    b = b + 2
+                if c >= h2:
+                    c = c - h2
+                    b = b + d2
                 else:
                     print("to little cookies!")
             elif u == "5":
-                if c >= 450:
-                    c = c - 450
-                    b = b + 5
+                if c >= h3:
+                    c = c - h3
+                    b = b + d3
                 else:
                     print("to little cookies!")
             elif u == "10":
-                if c >= 800:
-                    c = c - 800
-                    b = b + 10
+                if c >= h4:
+                    c = c - h4
+                    b = b + d4
                 else:
                     print("to little cookies!")
             elif u == "20":
-                if c >= 1400:
-                    c = c - 1400
-                    b = b + 20
+                if c >= h5:
+                    c = c - h5
+                    b = b + d5
                 else:
                     print("to little cookies!")
             elif u == "50":
-                if c >= 3000:
-                    c = c - 3000
-                    b = b + 50
+                if c >= h6:
+                    c = c - h6
+                    b = b + d6
                 else:
                     print("to little cookies!")
             elif u == "100":
-                if c >= 4500:
-                    c = c - 4500
-                    b = b + 100
-                else:
-                    print("to little cookies!")
-            elif u == "1000":
-                if c >= 45000:
-                    c = c - 45000
-                    b = b + 1000
+                if c >= h7:
+                    c = c - h7
+                    b = b + d7
                 else:
                     print("to little cookies!")
             elif u == "exit":
