@@ -1,0 +1,9 @@
+sandbox menu controls
+to enter sandbox menu enter "sandbox"
+  to reset your cookies just like in the normal version default enter "reset"
+  to get back your cookies and multiplier just like in the sandbox default enter "back"
+  to 2x your cookies and multiplier enter "2"
+  to reset your cookies to 0 enter "cookie"
+  to reset your multiplier to 1 enter "multi"
+  to get your cookies and multiplier to 0 enter "null"
+  to exit sandbox menu enter "exit"
