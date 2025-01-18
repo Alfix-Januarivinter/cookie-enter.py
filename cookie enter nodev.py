@@ -1,4 +1,4 @@
-#version 1.0.5 (prerelease) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+#version 1.0.4 (release) if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
 c=0
 b=1
 print("welcome to Cookie enter")
