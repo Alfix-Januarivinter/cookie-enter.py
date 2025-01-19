@@ -1,46 +1,46 @@
-#version 1.0.6 (release) sandbox if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
+#version 1.0.7 (release) sandbox if bug contact a developer https://github.com/Alfix-Januarivinter/cookie-enter.py
 c = int(input("enter cookies: "))
 b = int(input("enter multiplier: "))
 print("Welcome to Cookie enter! Sandbox edition!")
 while True:
     print(c)
     a = input("Menu: ")
-    if a == "sandbox":
+    if a == "sandbox" or a == "s":
         while True:
             print(c)
             print(b)
             s = input("sandbox: ")
-            if s == "reset":
+            if s == "reset" or s == "r":
                 c = 0
                 b = 1
-            elif s == "unlimited":
+            elif s == "unlimited" or s == "un":
                 c = 10000000000000000000000000000000000000000000000000000000000000
                 b = 100000000000000000000
             elif s == "2":
                 c = c + c
                 b = b + b
-            elif s == "choose":
+            elif s == "choose" or s == "co":
                 c = int(input("enter cookies: "))
                 b = int(input("enter multiplier: "))  
-            elif s == "exit":
+            elif s == "exit" or s == "esc":
                 break
             else:
                 print("wrong input!")
-    if a == "enter":
+    if a == "enter" or a == "e":
         while True:
             print(c)
-            enter = input(": ")
-            if enter == "exit":
+            e = input(": ")
+            if e == "exit" or e == "esc":
                 break
             else:
                 c = c + b
-    elif a == "upgrade":
+    elif a == "upgrade" or a == "up":
         while True:
             print("cookies = " + str(c))
             print("cookie multiplier = " + str(b))
             print("+1 = 100 / +2 = 200 / +5 = 450 / +10 = 800 / +20 = 1400 / +50 = 3000 / +100 = 4500")
             u = input("Upgrade: ")
-            if u == "exit":
+            if u == "exit" or u == "esc":
                 break
             h = int(input("Upgrade times: "))
             if h < 0:
@@ -94,15 +94,15 @@ while True:
                     print("to little cookies!")
             elif u == "100":
                 h7 = h * 4500
-                d7 = h * 100
+                d = h * 100
                 if c >= h7:
                     c = c - h7
-                    b = b + d7
+                    b = b + d
                 else:
                     print("to little cookies!")
             else:
                 print("wrong input!")
-    elif a == "exit":
+    elif a == "exit" or a == "esc":
         break
     else:
         print("wrong input!")
