@@ -1,7 +1,7 @@
 sandbox menu controls
-to enter sandbox menu enter "sandbox"
-  to reset your cookies just like in the normal version default enter "reset"
-  to get nearlly unlimited cookies and multiplier enter "unlimited"
+to enter sandbox menu enter "sandbox" or "s"
+  to reset your cookies just like in the normal version default enter "reset" or "r"
+  to get nearlly unlimited cookies and multiplier enter "unlimited" or "un"
   to 2x your cookies and multiplier enter "2"
-  to choose how many cookies and multiplier you have enter "choose"
-  to exit sandbox menu enter "exit"
+  to choose how many cookies and multiplier you have enter "choose" or "co"
+  to exit sandbox menu enter "exit" or "esc"
