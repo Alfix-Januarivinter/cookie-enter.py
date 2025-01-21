@@ -14,7 +14,9 @@ while True:
             print(c)
             print(b)
             a = input("sandbox: ")
-            if a == "reset" or a == "r":
+            if a == x or a == z:
+                break
+            elif a == "reset" or a == "r":
                 c = 0
                 b = 1
             elif a == "unlimited" or a == "un":
@@ -25,12 +27,10 @@ while True:
                 b = b + b
             elif a == "choose" or a == "co":
                 c = int(input("enter cookies: "))
-                b = int(input("enter multiplier: "))  
-            elif a == x or a == z:
-                break
+                b = int(input("enter multiplier: "))
             else:
                 print(p)
-    if a == "enter" or a == "e":
+    elif a == "enter" or a == "e":
         while True:
             print(c)
             a = input(": ")
