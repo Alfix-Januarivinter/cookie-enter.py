@@ -1,10 +1,8 @@
-# Version 1.1.0 (New Design Release)
+# Version 1.1.1 (New Window and Design)
 # If you encounter any bugs, please contact the developer at: https://github.com/Alfix-Januarivinter/cookie-enter.py
-
+import tkinter as tk
+# Constants and Variables
 FEW_COOKIES = "Too few cookies!"
-INVALID_INPUT = "Invalid input!"
-EXIT = ["exit", "esc"]
-
 UPGRADE_OPTIONS = {
     "1": (100, 1),
     "2": (200, 2),
@@ -12,72 +10,74 @@ UPGRADE_OPTIONS = {
     "10": (800, 10),
     "20": (1400, 20),
     "50": (3000, 50),
-    "100": (4500, 100)
+    "100": (4500, 100),
 }
-
 cookies = 0
 multiplier = 1
-print("Welcome to Cookie Enter!")
 
-def display():
-    print(f"Cookies = {cookies}\nCookie Multiplier = {multiplier}")
+# Functions
+def update_display():
+    """Update the display for cookies and multiplier."""
+    cookie_label.config(text=f"Cookies: {cookies}")
+    multiplier_label.config(text=f"Multiplier: x{multiplier}")
+    status_label.config(text="")
 
-def cookies_increase():
+def collect_cookies():
+    """Increase cookies based on the multiplier."""
     global cookies
     cookies += multiplier
+    update_display()
 
-def enter():
-    while True:
-        print(cookies)
-        user_input = input(": ").strip().lower()
-        if user_input in EXIT:
-            break
-        cookies_increase()
-
-def upgrade(upgrade, upgrade_times):
+def upgrade_multiplier(upgrade_key):
+    """Handle upgrades and update the multiplier."""
     global cookies, multiplier
-    cost_per_upgrade, multiplier_increase = UPGRADE_OPTIONS[upgrade]
-    total_cost = cost_per_upgrade * upgrade_times
-    if cookies >= total_cost:
-        cookies -= total_cost
-        multiplier += multiplier_increase * upgrade_times
-        print(f"Upgrade successful! Multiplier increased to {multiplier}.")
+    cost, increase = UPGRADE_OPTIONS[upgrade_key]
+    if cookies >= cost:
+        cookies -= cost
+        multiplier += increase
+        status_label.config(text="Upgrade successful!", fg="green")
     else:
-        print(FEW_COOKIES)
+        status_label.config(text=FEW_COOKIES, fg="red")
+    update_display()
 
-def handle_upgrade():
-    while True:
-        display()
-        print(" / ".join([f"+{v[1]} = {v[0]}" for v in UPGRADE_OPTIONS.values()]))
-        upgrade_choice = input("Upgrade: ").strip()
-        if upgrade_choice in EXIT:
-            break
-        if upgrade_choice not in UPGRADE_OPTIONS:
-            print(INVALID_INPUT)
-            continue
-        try:
-            upgrade_times = max(0, int(input("Upgrade times: ").strip()))
-        except ValueError:
-            print(INVALID_INPUT)
-            continue
-        upgrade(upgrade_choice, upgrade_times)
+def open_upgrade_menu():
+    """Open a new window for the upgrade menu."""
+    upgrade_window = tk.Toplevel(root)
+    upgrade_window.title("Upgrade Menu")
+    upgrade_window.geometry("300x400")
 
-def main_menu():
-    while True:
-        print(cookies)
-        user_input = input("Menu: ").strip().lower()
-        if user_input in ["enter", "e"]:
-            enter()
-        elif user_input in ["upgrade", "up"]:
-            handle_upgrade()
-        elif user_input in EXIT:
-            break
-        else:
-            print(INVALID_INPUT)
+    tk.Label(upgrade_window, text="Choose an Upgrade", font=("Arial", 14)).pack(pady=10)
 
-def main():
-    main_menu()
-    print("Bye!")
+    for key, (cost, increase) in UPGRADE_OPTIONS.items():
+        tk.Button(
+            upgrade_window,
+            text=f"+{increase} Multiplier = {cost} Cookies",
+            font=("Arial", 12),
+            command=lambda k=key: upgrade_multiplier(k)
+        ).pack(pady=5)
 
-if __name__ == "__main__":
-    main()
+# Main GUI Setup
+root = tk.Tk()
+root.title("Cookie Game")
+root.geometry("400x300")
+
+# Labels
+cookie_label = tk.Label(root, text=f"Cookies: {cookies}", font=("Arial", 14))
+cookie_label.pack(pady=10)
+
+multiplier_label = tk.Label(root, text=f"Multiplier: x{multiplier}", font=("Arial", 14))
+multiplier_label.pack(pady=10)
+
+# Buttons
+collect_button = tk.Button(root, text="Collect Cookies", font=("Arial", 14), command=collect_cookies)
+collect_button.pack(pady=10)
+
+upgrade_button = tk.Button(root, text="Upgrade Multiplier", font=("Arial", 14), command=open_upgrade_menu)
+upgrade_button.pack(pady=10)
+
+# Status Label
+status_label = tk.Label(root, text="", font=("Arial", 12), fg="blue")
+status_label.pack(pady=10)
+
+# Run the main loop
+root.mainloop()
