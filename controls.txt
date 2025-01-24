@@ -1,8 +1,0 @@
-controls in cookie enter game:
-if want to the cookie menu enter: "enter" or "e"
-  if want cookies in cookie menu hit: enter
-  if want to esc cookie menu enter: "exit" or "esc"
-if want to go to upgrade menu enter: "upgrade" or "up"
-  if want to upgrade in upgrade menu enter: "the number of how much you want to add to your multiplier" + "how many that you want"
-  if want to esc upgrade menu enter: "exit" or "esc"
-if want to exit game enter: "exit" or "esc"
