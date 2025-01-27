@@ -1,6 +1,8 @@
-# Version 1.1.1 (New Window and Design)
+# Version 1.1.2 (Added tools!)
 # If you encounter any bugs, please contact the developer at: https://github.com/Alfix-Januarivinter/cookie-enter.py
+
 import tkinter as tk
+
 # Constants and Variables
 FEW_COOKIES = "Too few cookies!"
 UPGRADE_OPTIONS = {
@@ -56,9 +58,13 @@ def open_upgrade_menu():
             command=lambda k=key: upgrade_multiplier(k)
         ).pack(pady=5)
 
+# Exit function
+def exit_game():
+    root.quit()  # Quit the application
+
 # Main GUI Setup
 root = tk.Tk()
-root.title("Cookie Game")
+root.title("Cookie Enter")
 root.geometry("400x300")
 
 # Labels
@@ -78,6 +84,10 @@ upgrade_button.pack(pady=10)
 # Status Label
 status_label = tk.Label(root, text="", font=("Arial", 12), fg="blue")
 status_label.pack(pady=10)
+
+# Exit Button (new)
+exit_button = tk.Button(root, text="Exit", font=("Arial", 14), command=exit_game)
+exit_button.pack(side="bottom", pady=10)
 
 # Run the main loop
 root.mainloop()
