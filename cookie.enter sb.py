@@ -1,10 +1,11 @@
-# Version 1.1.0 sandbox (New Design Release)
+# Version 1.1.2 sandbox (Added tools!)
 # If you encounter any bugs, please contact the developer at: https://github.com/Alfix-Januarivinter/cookie-enter.py
 
+import tkinter as tk
+
+# Constants and Variables
 FEW_COOKIES = "Too few cookies!"
 INVALID_INPUT = "Invalid input!"
-EXIT = ["exit", "esc"]
-
 UPGRADE_OPTIONS = {
     "1": (100, 1),
     "2": (200, 2),
@@ -12,96 +13,177 @@ UPGRADE_OPTIONS = {
     "10": (800, 10),
     "20": (1400, 20),
     "50": (3000, 50),
-    "100": (4500, 100)
+    "100": (4500, 100),
 }
+cookies = 0
+multiplier = 1
+EXIT = ["exit", "quit"]
 
-cookies = int(input("enter cookies: "))
-multiplier = int(input("Enter multiplier: "))
-print("Welcome to Cookie Enter! Sandbox edition")
+# Functions
+def update_display():
+    """Update the display for cookies and multiplier."""
+    cookie_label.config(text=f"Cookies: {cookies}")
+    multiplier_label.config(text=f"Multiplier: x{multiplier}")
+    root.update()  # Force the window to update and reflect changes
 
-def sandbox():
-    while True:
-        global cookies , multiplier
-        display()
-        a = input("sandbox: ")
-        if a in EXIT:
-            break
-        elif a == "reset" or a == "r":
-            cookies = 0
-            multiplier = 1
-        elif a == "unlimited" or a == "un":
-            cookies = 10000000000000000000000000000000000000000000000000000000000000
-            multiplier = 100000000000000000000
-        elif a == "2":
-            cookies = cookies + cookies
-            multiplier = multiplier + multiplier
-        elif a == "choose" or a == "co":
-            cookies = int(input("enter cookies: "))
-            multiplier = int(input("enter multiplier: "))
-        else:
-            print(INVALID_INPUT)
-
-def display():
-    print(f"Cookies = {cookies}\nCookie Multiplier = {multiplier}")
-
-def cookies_increase():
+def collect_cookies():
+    """Increase cookies based on the multiplier."""
     global cookies
     cookies += multiplier
+    update_display()
 
-def enter():
-    while True:
-        print(cookies)
-        user_input = input(": ").strip().lower()
-        if user_input in EXIT:
-            break
-        cookies_increase()
-
-def upgrade(upgrade, upgrade_times):
+def upgrade_multiplier(upgrade_key):
+    """Handle upgrades and update the multiplier."""
     global cookies, multiplier
-    cost_per_upgrade, multiplier_increase = UPGRADE_OPTIONS[upgrade]
-    total_cost = cost_per_upgrade * upgrade_times
-    if cookies >= total_cost:
-        cookies -= total_cost
-        multiplier += multiplier_increase * upgrade_times
-        print(f"Upgrade successful! Multiplier increased to {multiplier}.")
+    cost, increase = UPGRADE_OPTIONS[upgrade_key]
+    
+    # Check if the player has enough cookies for the upgrade
+    if cookies >= cost:
+        cookies -= cost
+        multiplier += increase
+        status_label.config(text="Upgrade successful!", fg="green")
     else:
-        print(FEW_COOKIES)
+        status_label.config(text=FEW_COOKIES, fg="red")
+    
+    # Force the window to update after status label change
+    root.update()
+    update_display()
 
-def handle_upgrade():
-    while True:
-        display()
-        print(" / ".join([f"+{v[1]} = {v[0]}" for v in UPGRADE_OPTIONS.values()]))
-        upgrade_choice = input("Upgrade: ").strip()
-        if upgrade_choice in EXIT:
-            break
-        if upgrade_choice not in UPGRADE_OPTIONS:
-            print(INVALID_INPUT)
-            continue
-        try:
-            upgrade_times = max(0, int(input("Upgrade times: ").strip()))
-        except ValueError:
-            print(INVALID_INPUT)
-            continue
-        upgrade(upgrade_choice, upgrade_times)
+def open_upgrade_menu():
+    """Open a new window for the upgrade menu."""
+    upgrade_window = tk.Toplevel(root)
+    upgrade_window.title("Upgrade Menu")
+    upgrade_window.geometry("300x400")
 
-def main_menu():
-    while True:
-        print(cookies)
-        user_input = input("Menu: ").strip().lower()
-        if user_input in ["enter", "e"]:
-            enter()
-        elif user_input in ["upgrade", "up"]:
-            handle_upgrade()
-        elif user_input in ["sandbox", "sb"]:
-            sandbox()
-        elif user_input in EXIT:
-            break
+    tk.Label(upgrade_window, text="Choose an Upgrade", font=("Arial", 14)).pack(pady=10)
+
+    for key, (cost, increase) in UPGRADE_OPTIONS.items():
+        tk.Button(
+            upgrade_window,
+            text=f"+{increase} Multiplier = {cost} Cookies",
+            font=("Arial", 12),
+            command=lambda k=key: upgrade_multiplier(k)
+        ).pack(pady=5)
+
+def sandbox():
+    """Sandbox mode to modify the game values manually."""
+    def execute_sandbox_command():
+        global cookies, multiplier
+        command = sandbox_entry.get()
+
+        if command in EXIT:
+            sandbox_window.destroy()
+            return
+        
+        if command == "reset" or command == "r":
+            cookies = 0
+            multiplier = 1
+        elif command == "unlimited" or command == "un":
+            cookies = 10000000000000000000000000000000000000000000000000000000000000
+            multiplier = 100000000000000000000
+        elif command == "2":
+            cookies = cookies + cookies
+            multiplier = multiplier + multiplier
+        elif command == "choose" or command == "co":
+            # Prompt the user for custom cookie and multiplier values
+            sandbox_entry.config(state="disabled")  # Disable the original entry
+            choose_label.config(text="Enter custom cookies and multiplier:")
+
+            cookie_label_text.config(text="Cookies:")
+            multiplier_label_text.config(text="Multiplier:")
+
+            cookie_entry.pack(pady=5)
+            multiplier_entry.pack(pady=5)
+            confirm_button.pack(pady=10)  # Show the Confirm button
         else:
-            print(INVALID_INPUT)
+            sandbox_status_label.config(text=INVALID_INPUT, fg="red")
+            return
+        
+        sandbox_status_label.config(text="Command executed successfully!", fg="green")
+        update_display()
+    
+    def confirm_choose_values():
+        """Confirm the custom values entered by the user."""
+        global cookies, multiplier
+        try:
+            cookies = int(cookie_entry.get())
+            multiplier = int(multiplier_entry.get())
+            sandbox_status_label.config(text="Values confirmed!", fg="green")
+            update_display()
+        except ValueError:
+            sandbox_status_label.config(text="Invalid input! Please enter numbers.", fg="red")
 
-def main():
-    main_menu()
-    print("Bye!")
+    # Create Sandbox Window
+    sandbox_window = tk.Toplevel(root)
+    sandbox_window.title("Sandbox Mode")
+    sandbox_window.geometry("400x400")
+    
+    # Label for Sandbox
+    sandbox_label = tk.Label(sandbox_window, text="Enter command: reset, unlimited, 2, choose, or exit", font=("Arial", 12))
+    sandbox_label.pack(pady=10)
+    
+    # Entry widget to input commands
+    sandbox_entry = tk.Entry(sandbox_window, font=("Arial", 12))
+    sandbox_entry.pack(pady=10)
+    
+    # Button to execute the sandbox command
+    sandbox_button = tk.Button(sandbox_window, text="Execute", font=("Arial", 12), command=execute_sandbox_command)
+    sandbox_button.pack(pady=10)
+    
+    # Status Label to show the result of command
+    sandbox_status_label = tk.Label(sandbox_window, text="", font=("Arial", 12))
+    sandbox_status_label.pack(pady=10)
 
-if __name__ == "__main__":
-    main()
+    # UI for "choose" command (after it's triggered)
+    choose_label = tk.Label(sandbox_window, text="", font=("Arial", 12))
+    choose_label.pack(pady=10)
+
+    cookie_label_text = tk.Label(sandbox_window, text="Cookies:", font=("Arial", 12))
+    multiplier_label_text = tk.Label(sandbox_window, text="Multiplier:", font=("Arial", 12))
+
+    cookie_entry = tk.Entry(sandbox_window, font=("Arial", 12))
+    multiplier_entry = tk.Entry(sandbox_window, font=("Arial", 12))
+    confirm_button = tk.Button(sandbox_window, text="Confirm Values", font=("Arial", 12), command=confirm_choose_values)
+
+    # Initially hide the input fields and the confirm button
+    cookie_label_text.pack_forget()
+    multiplier_label_text.pack_forget()
+    cookie_entry.pack_forget()
+    multiplier_entry.pack_forget()
+    confirm_button.pack_forget()
+
+# Main GUI Setup
+root = tk.Tk()
+root.title("Cookie Enter Sandbox Edition")
+root.geometry("400x400")  # Increased window size for better layout
+
+# Labels
+cookie_label = tk.Label(root, text=f"Cookies: {cookies}", font=("Arial", 14))
+cookie_label.pack(pady=10)
+
+multiplier_label = tk.Label(root, text=f"Multiplier: x{multiplier}", font=("Arial", 14))
+multiplier_label.pack(pady=10)
+
+# Buttons
+collect_button = tk.Button(root, text="Collect Cookies", font=("Arial", 14), command=collect_cookies)
+collect_button.pack(pady=10)
+
+upgrade_button = tk.Button(root, text="Upgrade Multiplier", font=("Arial", 14), command=open_upgrade_menu)
+upgrade_button.pack(pady=10)
+
+sandbox_button = tk.Button(root, text="Sandbox Mode", font=("Arial", 14), command=lambda: sandbox())
+sandbox_button.pack(pady=10)
+
+# Status Label (To display upgrade status messages)
+status_label = tk.Label(root, text="", font=("Arial", 12), fg="blue")
+status_label.pack(pady=10)
+
+# Exit Button (No save now)
+def exit_game():
+    root.quit()  # Quit the application
+
+exit_button = tk.Button(root, text="Exit", font=("Arial", 14), command=exit_game)
+exit_button.pack(side="bottom", pady=10)
+
+# Run the main loop
+root.mainloop()
