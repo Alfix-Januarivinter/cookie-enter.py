@@ -18,3 +18,13 @@ sudo pacman -S tk
 ```bash
 sudo apt-get install tk-dev tk8.6-dev libtk8.6 libtcl8.6 tcl-dev
 ```   
+
+## Compiling from source
+You need the ```cookie.enter.py``` file, if you haven't already install pyinstaller :
+```bash
+pip install pyinstaller
+```
+You need a terminal in the same folder as the file, and then to compile the python file:
+```bash
+pyinstaller --onefile cookie.enter.py
+```
