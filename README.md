@@ -24,6 +24,10 @@ You need the ```cookie.enter.py``` file, if you haven't already install pyinstal
 ```bash
 pip install pyinstaller
 ```
+or
+```bash
+pipx install pyinstaller
+```
 You need a terminal in the same folder as the file, and then to compile the python file:
 ```bash
 pyinstaller --onefile cookie.enter.py
