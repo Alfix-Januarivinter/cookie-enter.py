@@ -1,4 +1,4 @@
-# Cookie-enter Version 1.1.4 (Added themes and saves!)
+# Cookie-enter Version 1.1.5 (Added themes and saves!)
 # If you encounter any bugs, please contact the developer at:
 # https://github.com/Alfix-Januarivinter/cookie-enter.py
 
@@ -49,7 +49,7 @@ DARK_THEME = {
 
 # Functions
 def update_display():
-    cookie_label.config(text=f"Cookies: {cookies}")
+    cookie_label.config(text=f"Cookies 󰆘: {cookies}")
     multiplier_label.config(text=f"Multiplier: {multiplier}")
     ascending_label.config(text=f"Ascending: {ascending_multiplier}")
     ascending_button.config(
@@ -140,7 +140,7 @@ def save_game():
     }
     with open(SAVE_FILE, "w") as f:
         json.dump(data, f)
-    status_label.config(text="Game saved!", fg="green")
+    status_label.config(text="Game saved 󰆓!", fg="green")
 
 
 def load_game():
@@ -158,7 +158,7 @@ def load_game():
         dark_mode_var.set(dark_mode)
         status_label.config(text="Game loaded!", fg="green")
     except FileNotFoundError:
-        status_label.config(text="No save file found.", fg="orange")
+        status_label.config(text="No save file found.", fg="red")
 
     update_display()
 
@@ -197,7 +197,7 @@ ascending_label = tk.Label(root, font=("Arial", 14))
 ascending_label.pack(pady=10)
 
 collect_button = tk.Button(
-    root, text="Collect Cookies", font=("Arial", 14), command=collect_cookies
+    root, text="Collect Cookies 󰆘", font=("Arial", 14), command=collect_cookies
 )
 collect_button.pack(pady=10)
 
@@ -209,7 +209,7 @@ upgrade_button.pack(pady=10)
 ascending_button = tk.Button(root, font=("Arial", 14), command=cookies_ascending)
 ascending_button.pack(pady=10)
 
-save_button = tk.Button(root, text="Save Game", font=("Arial", 14), command=save_game)
+save_button = tk.Button(root, text="Save Game 󰆓", font=("Arial", 14), command=save_game)
 save_button.pack(pady=5)
 
 load_button = tk.Button(root, text="Load Game", font=("Arial", 14), command=load_game)
