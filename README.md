@@ -30,5 +30,5 @@ pipx install pyinstaller
 ```
 You need a terminal in the same folder as the file, and then to compile the python file:
 ```bash
-pyinstaller --onefile cookie.enter.py
+pyinstaller --onefile cookie-enter.py
 ```
