@@ -1,9 +1,10 @@
 /*
 
 LICENSE
-cookie.enter.spec
-dist/*
-build/*
+cookie-enter.spec
+dist/
+build/
 README.md
+cookie_save.json
 
 !.gitignore
