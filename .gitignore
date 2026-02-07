@@ -4,5 +4,6 @@ LICENSE
 cookie.enter.spec
 dist/*
 build/*
+README.md
 
 !.gitignore
