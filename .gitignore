@@ -8,3 +8,5 @@ README.md
 cookie_save.json
 
 !.gitignore
+!cookie-enter.py
+!cookie-enter.exe
