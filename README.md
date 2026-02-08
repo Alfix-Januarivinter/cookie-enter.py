@@ -1,6 +1,8 @@
 # cookie-enter.py
 Cookie enter game i made with python! Have fun!
 
+**Disclamer!** Version 1.1.3 and above doesn't have real .exe files (they are Linux binary's) at least what I think! If you want more infomation there exist an issue in issue tracker: https://github.com/Alfix-Januarivinter/cookie-enter.py/issues/1
+
 ## Tkinter
 If you want aren't on windows and want to use the .py files you have to install tkinter (you won't need to install tkinter if you are using the .exe file)
 
