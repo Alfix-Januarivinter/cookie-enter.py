@@ -1,5 +1,5 @@
-# Cookie-enter Version 1.1.5 (Added themes and saves!)
-# If you encounter any bugs, please contact the developer at:
+# Cookie-enter.py Version 1.1.5 (Quality update!)
+# If you encounter any bugs/issues, please contact the developer at:
 # https://github.com/Alfix-Januarivinter/cookie-enter.py
 
 import json
@@ -17,7 +17,6 @@ dark_mode = False
 
 open_windows = []
 
-FEW_COOKIES = "Too few cookies!"
 UPGRADE_OPTIONS = {
     "1": (100, 1),
     "2": (200, 2),
@@ -48,12 +47,16 @@ DARK_THEME = {
 
 
 # Functions
+def format_number(value: int) -> str:
+    return f"{value:,}".replace(",", "'")
+
+
 def update_display():
-    cookie_label.config(text=f"Cookies 󰆘: {cookies}")
-    multiplier_label.config(text=f"Multiplier: {multiplier}")
-    ascending_label.config(text=f"Ascending: {ascending_multiplier}")
+    cookie_label.config(text=f"Cookies : {format_number(cookies)}󰆘")
+    multiplier_label.config(text=f"Multiplier: {format_number(multiplier)}")
+    ascending_label.config(text=f"Ascending: {format_number(ascending_multiplier)}")
     ascending_button.config(
-        text=f"Upgrade Ascending Multiplier cost: {ascending_cost} cookies"
+        text=f"Upgrade Ascending Multiplier cost: {format_number(ascending_cost)}󰆘 Cookies"
     )
 
 
@@ -69,9 +72,9 @@ def upgrade_multiplier(upgrade_key):
     if cookies >= cost:
         cookies -= cost
         multiplier += increase
-        status_label.config(text="Upgrade successful!", fg="green")
+        status_label.config(text="Upgrade successful !", fg="green")
     else:
-        status_label.config(text=FEW_COOKIES, fg="red")
+        status_label.config(text="To few cookies !", fg="red")
     update_display()
 
 
@@ -95,7 +98,7 @@ def close_window(window):
 def open_upgrade_menu():
     upgrade_window = tk.Toplevel(root)
     upgrade_window.title("Upgrade Menu")
-    upgrade_window.geometry("400x550")
+    upgrade_window.geometry("400x540")
 
     open_windows.append(upgrade_window)
     upgrade_window.protocol(
@@ -107,9 +110,9 @@ def open_upgrade_menu():
     for key, (cost, increase) in UPGRADE_OPTIONS.items():
         tk.Button(
             upgrade_window,
-            text=f"+{increase} Multiplier = {cost} Cookies",
+            text=f"+{format_number(increase)} Multiplier = {format_number(cost)}󰆘 Cookies",
             font=("Arial", 14),
-            width=25,
+            width=30,
             command=lambda k=key: upgrade_multiplier(k),
         ).pack(pady=10)
 
@@ -124,9 +127,9 @@ def cookies_ascending():
         ascending_cost *= 2
         cookies = 0
         multiplier = 1
-        status_label.config(text="Upgrade successful!", fg="green")
+        status_label.config(text="Upgrade successful !", fg="green")
     else:
-        status_label.config(text=FEW_COOKIES, fg="red")
+        status_label.config(text="To few cookies !", fg="red")
     update_display()
 
 
@@ -156,9 +159,9 @@ def load_game():
         dark_mode = data.get("dark_mode", False)
 
         dark_mode_var.set(dark_mode)
-        status_label.config(text="Game loaded!", fg="green")
+        status_label.config(text="Game loaded 󱣪!", fg="green")
     except FileNotFoundError:
-        status_label.config(text="No save file found.", fg="red")
+        status_label.config(text="No save file found 󱙃.", fg="red")
 
     update_display()
 
@@ -176,13 +179,12 @@ def toggle_dark_mode():
     apply_theme()
 
 
-# Exit function
 def exit_game():
     save_game()
     root.after(50, root.quit)
 
 
-# Labels and buttons
+# GUI
 root = tk.Tk()
 root.title("Cookie Enter")
 root.geometry("600x600")
@@ -202,7 +204,7 @@ collect_button = tk.Button(
 collect_button.pack(pady=10)
 
 upgrade_button = tk.Button(
-    root, text="Upgrade Multiplier", font=("Arial", 14), command=open_upgrade_menu
+    root, text="Upgrade Multiplier ", font=("Arial", 14), command=open_upgrade_menu
 )
 upgrade_button.pack(pady=10)
 
@@ -212,19 +214,19 @@ ascending_button.pack(pady=10)
 save_button = tk.Button(root, text="Save Game 󰆓", font=("Arial", 14), command=save_game)
 save_button.pack(pady=5)
 
-load_button = tk.Button(root, text="Load Game", font=("Arial", 14), command=load_game)
+load_button = tk.Button(root, text="Load Game 󱣪", font=("Arial", 14), command=load_game)
 load_button.pack(pady=5)
 
 dark_mode_var = tk.BooleanVar(value=False)
 dark_mode_button = tk.Button(
-    root, text="Toogle Themes", font=("Arial", 10), command=toggle_dark_mode
+    root, text="Toogle Themes 󰔎", font=("Arial", 10), command=toggle_dark_mode
 )
 dark_mode_button.place(relx=0.95, rely=0.02, anchor="ne")
 
 status_label = tk.Label(root, font=("Arial", 12))
 status_label.pack(pady=10)
 
-exit_button = tk.Button(root, text="Exit", font=("Arial", 14), command=exit_game)
+exit_button = tk.Button(root, text="Exit ", font=("Arial", 14), command=exit_game)
 exit_button.pack(side="bottom", pady=10)
 
 load_game()
