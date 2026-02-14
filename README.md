@@ -32,7 +32,37 @@ or
 ```bash
 pipx install pyinstaller
 ```
+
 You need a terminal in the same folder as the file, and then to compile the python file:
 ```bash
 pyinstaller --onefile cookie-enter.py
+```
+
+## For myself if I forget how to push using git. (Hehe)
+Add files to git
+```bash
+git add .
+```
+
+Commit your changes with a message
+```bash
+git commit -m "Some stupid message"
+```
+
+Push it to the repository
+```bash
+git push -u origin main
+```
+
+If you get a error, just try this:
+```bash
+git pull origin main --allow-unrelated-histories   
+```
+
+And if you somehow the project isn't a remote repository then:
+```bash
+git init
+```
+```bash
+git remote add origin https://github.com/Alfix-Januativinter/another-useless-repository
 ```
