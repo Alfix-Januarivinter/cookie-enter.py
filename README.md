@@ -59,7 +59,7 @@ If you get an error, just try this:
 git pull origin main --allow-unrelated-histories   
 ```
 
-And if you somehow the project isn't a remote repository then:
+And if somehow the project isn't a remote repository then:
 ```bash
 git init
 ```
