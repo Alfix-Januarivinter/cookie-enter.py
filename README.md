@@ -3,6 +3,8 @@ Cookie enter game i made with python! Have fun!
 
 **Disclamer!** Version 1.1.3 and above doesn't have real .exe files (they are Linux binary's) at least what I think! If you want more infomation there exist an issue in issue tracker: https://github.com/Alfix-Januarivinter/cookie-enter.py/issues/1
 
+You need to have nerdfont installed on your system for the version 1.1.5 symbols to be displayed properly!
+
 ## Tkinter
 If you want aren't on windows and want to use the .py files you have to install tkinter (you won't need to install tkinter if you are using the .exe file)
 
