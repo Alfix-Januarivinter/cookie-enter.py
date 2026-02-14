@@ -54,7 +54,7 @@ Push it to the repository
 git push -u origin main
 ```
 
-If you get a error, just try this:
+If you get an error, just try this:
 ```bash
 git pull origin main --allow-unrelated-histories   
 ```
