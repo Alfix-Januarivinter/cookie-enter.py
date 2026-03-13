@@ -71,6 +71,7 @@ DARK_THEME = {
 upgrade_buttons = []
 cps_upgrade_buttons = []
 max_upgrade_button = None
+max_cps_button = None
 unlocked_upgrades = set()
 unlocked_cps_upgrades = set()
 
@@ -114,7 +115,7 @@ def unlock_multiplier(upgrade_key):
 
 
 def update_display():
-    global upgrade_buttons, cps_upgrade_buttons, max_upgrade_button
+    global upgrade_buttons, cps_upgrade_buttons, max_upgrade_button, max_cps_button
     cookie_label.config(text=f"Cookies : {format_number(cookies)}󰆘")
     net_label.config(
         text=f"Net Worth : {format_number(ascending_cost - 1000 + cookies + ((multiplier - 1) * 45) + (cps * 300))}󰆘"
@@ -155,15 +156,31 @@ def update_display():
             if max_upgrade_button.winfo_exists():
                 max_upgrades = int(cookies / 100)
                 max_cost = int(max_upgrades * 100)
-                if ascending_multiplier <= 5:
-                    new_text = f"Max: +{format_number(max_upgrades)} = {format_number(max_cost)}󰆘"
-                    state = tk.NORMAL if max_upgrades > 0 else tk.DISABLED
-                    fg_color = "white" if dark_mode else "black"
-                else:
-                    new_text = f"Locked — requires Ascending ≤ 5 (current: {ascending_multiplier})"
+                if ascending_multiplier < 5:
+                    new_text = f"Locked — requires Ascending >= 5 (current: {ascending_multiplier})"
                     state = tk.DISABLED
                     fg_color = "red"
+                else:
+                    new_text = f"Max: +{format_number(max_upgrades)} = {format_number(max_cost)}󰆘"
+                    state = tk.NORMAL
+                    fg_color = "white" if dark_mode else "black"
                 max_upgrade_button.config(text=new_text, state=state, fg=fg_color)
+        except tk.TclError:
+            pass
+
+    if max_cps_button is not None:
+        try:
+            if max_cps_button.winfo_exists():
+                if ascending_multiplier >= MAX_CPS_UNLOCK_ASC:
+                    extra = int(cookies // 500) * MAX_CPS_PER_500
+                    cost = extra * 500
+                    new_text = f"Max CPS: {format_number(cost)}󰆘 for +{format_number(extra)} CPS"
+                    affordable = cookies >= cost
+                    theme = DARK_THEME if dark_mode else LIGHT_THEME
+                    state = tk.NORMAL if affordable else tk.DISABLED
+                    bg = theme["button_bg"] if affordable else "gray"
+                    fg = theme["fg"] if affordable else "darkgray"
+                    max_cps_button.config(text=new_text, state=state, bg=bg, fg=fg)
         except tk.TclError:
             pass
 
@@ -188,10 +205,9 @@ def update_display():
                 theme = DARK_THEME if dark_mode else LIGHT_THEME
                 affordable = False
                 if "Max CPS" in text:
-                    affordable = (
-                        ascending_multiplier >= MAX_CPS_UNLOCK_ASC
-                        and cookies >= MAX_CPS_UNLOCK_COST
-                    )
+                    extra = int(cookies // 500) * MAX_CPS_PER_500
+                    cost = extra * 500
+                    affordable = cookies >= cost
                 else:
                     try:
                         cost_str = (
@@ -263,6 +279,13 @@ def close_window(window):
                 max_upgrade_button = None
         except tk.TclError:
             max_upgrade_button = None
+    global max_cps_button
+    if max_cps_button is not None:
+        try:
+            if max_cps_button.winfo_toplevel() == window:
+                max_cps_button = None
+        except tk.TclError:
+            max_cps_button = None
     window.destroy()
 
 
@@ -270,25 +293,27 @@ def max_upgrade():
     global cookies, multiplier
     max_upgrades = int(cookies / 100)
     max_cost = int(max_upgrades * 100)
-    if ascending_multiplier > 5:
+    if ascending_multiplier < 5:
         status_label.config(
-            text=f"Max upgrade locked — requires Ascending ≤ 5 (current: {ascending_multiplier})",
+            text=f"Max upgrade locked — requires Ascending >= 5 (current: {ascending_multiplier})",
             fg="orange",
         )
         play_sound("click.mp3")
         return
-    if cookies >= max_cost:
+    if max_upgrades > 0 and cookies >= max_cost:
         cookies -= max_cost
         multiplier += max_upgrades
         play_sound("upgrade.mp3")
-        status_label.config(text="Upgrade successful !", fg="green")
+        status_label.config(text="Max upgrade successful !", fg="green")
     else:
-        status_label.config(text="Too few cookies !", fg="red")
+        status_label.config(
+            text="Too few cookies or no upgrades available !", fg="red"
+        )
     update_display()
 
 
 def open_upgrade_menu():
-    global upgrade_buttons
+    global upgrade_buttons, max_upgrade_button
     upgrade_buttons = []
     upgrade_window = tk.Toplevel(root)
     upgrade_window.title("Upgrade Menu")
@@ -338,18 +363,18 @@ def open_upgrade_menu():
             }
         )
 
-    global max_upgrade_button
+    # Max upgrade button
     max_upgrade_button = None
     max_upgrades = int(cookies / 100)
     max_cost = int(max_upgrades * 100)
-    if ascending_multiplier <= 5:
-        txt = f"Max: +{format_number(max_upgrades)} Multiplier = {format_number(max_cost)}󰆘 Cookies"
-        state = tk.NORMAL if max_upgrades > 0 else tk.DISABLED
-        fg_color = "white" if dark_mode else "black"
-    else:
-        txt = f"Locked — requires Ascending ≤ 5 (current: {ascending_multiplier})"
+    if ascending_multiplier < 5:
+        txt = f"Locked — requires Ascending >= 5 (current: {ascending_multiplier})"
         state = tk.DISABLED
         fg_color = "red"
+    else:
+        txt = f"Max: +{format_number(max_upgrades)} = {format_number(max_cost)}󰆘"
+        state = tk.NORMAL
+        fg_color = "white" if dark_mode else "black"
     max_btn = tk.Button(
         upgrade_window,
         text=txt,
@@ -396,8 +421,9 @@ def open_autoclicker_menu():
             close_window(win)
             break
 
-    global cps_upgrade_buttons
+    global cps_upgrade_buttons, max_cps_button
     cps_upgrade_buttons = []
+    max_cps_button = None
     win = tk.Toplevel(root)
     win.title("Autoclicker Menu")
     win.geometry("525x400")
@@ -458,19 +484,23 @@ def open_autoclicker_menu():
         cps_upgrade_buttons.append(btn)
 
     if ascending_multiplier >= MAX_CPS_UNLOCK_ASC:
-        max_cps_affordable = cookies >= MAX_CPS_UNLOCK_COST
+        extra = int(cookies // 500) * MAX_CPS_PER_500
+        cost = extra * 500
+        max_cps_affordable = cookies >= cost
+        theme = DARK_THEME if dark_mode else LIGHT_THEME
         max_btn = tk.Button(
             win,
-            text=f"Max CPS: {format_number(MAX_CPS_UNLOCK_COST)}󰆘 for +{format_number(int(cookies // 500) * MAX_CPS_PER_500)} CPS",
+            text=f"Max CPS: {format_number(cost)}󰆘 for +{format_number(extra)} CPS",
             font=("Arial", 14),
             width=37,
             padx=10,
             pady=6,
             state=tk.NORMAL if max_cps_affordable else tk.DISABLED,
-            bg="#ffeb3b" if max_cps_affordable else "gray",
-            fg="black" if max_cps_affordable else "darkgray",
+            bg=theme["button_bg"] if max_cps_affordable else "gray",
+            fg=theme["fg"] if max_cps_affordable else "darkgray",
             command=lambda: [play_sound("click.mp3"), max_cps_upgrade()],
         )
+        max_cps_button = max_btn
     else:
         max_btn = tk.Button(
             win,
@@ -517,13 +547,14 @@ def buy_cps_upgrade(cost, gain):
 
 def max_cps_upgrade():
     global cookies, cps
-    if cookies >= MAX_CPS_UNLOCK_COST:
-        extra_cps = int(cookies // 500) * MAX_CPS_PER_500
-        cookies -= MAX_CPS_UNLOCK_COST
+    extra_cps = int(cookies // 500) * MAX_CPS_PER_500
+    cost = extra_cps * 500
+    if cookies >= cost:
+        cookies -= cost
         cps += extra_cps
         play_sound("upgrade.mp3")
         status_label.config(text=f"+{extra_cps} CPS from max upgrade!", fg="green")
-        update_display()
+        open_autoclicker_menu()
     else:
         status_label.config(text="Not enough cookies for max CPS!", fg="red")
 
@@ -631,7 +662,7 @@ def open_help():
 
     tk.Label(
         help_window,
-        text="This is a game where you click a button and you get cookies!.\n You may see now a label that says you have 0 cookies,\n if not you haven't already clicked on the button where it says collect cookies!\n And you can get more cookies per click by upgrading your multiplier.\n You can do that by hitting upgrade multiplier button and then another menu appears.\n When hitting upgrade ascending multiplier button,\n your cookies multiplier and cps will be reset,\n but you will get some back from your leftover cookies\n and you will get 1 ascending multiplier which multiplies with your multiplier,\n and same for cps!\n Once you are at ascending 5 or higher you will unlock cps!\n Cps (cookies per secound) is a built in autoclicker that gives you cookies every secound,\n it gives you the amount of cps you have every secound!\n Have fun!\n If you encounter any bugs/issues, please contact the developer at\n https://github.com/Alfix-Januarivinter/cookie-enter.py",
+        text="This is a game where you click a button and you get cookies!.\n You may see now a label that says you have 0 cookies,\n if not you haven't already clicked on the button where it says collect cookies!\n And you can get more cookies per click by upgrading your multiplier.\n You can do that by hitting upgrade multiplier button and then another menu appears.\n When hitting upgrade ascending multiplier button,\n your cookies multiplier and cps will be reset,\n but you will get some back from your leftover cookies\n and you will get 1 ascending multiplier which multiplies with your multiplier,\n and same for cps!\n Once you are at ascending 5 or higher you will unlock cps!\n Cps (cookies per second) is a built in autoclicker that gives you cookies every second,\n it gives you the amount of cps you have every second!\n Have fun!\n If you encounter any bugs/issues, please contact the developer at\n https://github.com/Alfix-Januarivinter/cookie-enter.py",
         font=("Arial", 12),
     ).pack(expand=True)
     apply_theme_to_window(help_window)
