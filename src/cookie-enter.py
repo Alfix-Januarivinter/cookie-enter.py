@@ -1,4 +1,4 @@
-# Cookie-enter.py Version 1.1.7 (CPS and unlocking Update!)
+# Cookie-enter.py Version 1.1.8 (Bug fixes!)
 # If you encounter any bugs/issues, please contact the developer at:
 # https://github.com/Alfix-Januarivinter/cookie-enter.py
 
@@ -11,7 +11,7 @@ pygame.mixer.init()
 
 # Save file
 SAVE_FILE = "cookie_save.json"
-GAME_VERSION = "1.1.7"
+GAME_VERSION = "1.1.8"
 INCOMPATIBLE_VERSIONS = ["1.1.1", "1.1.2", "1.1.3b", "1.1.3"]
 
 # Constants and Variables
