@@ -33,6 +33,11 @@ or
 pipx install pyinstaller
 ```
 
+Also for V1.1.7+ you need to install pygame :
+```bash
+pip install pygame
+```
+
 You need a terminal in the same folder as the file, and then to compile the python file:
 ```bash
 pyinstaller --onefile cookie-enter.py
