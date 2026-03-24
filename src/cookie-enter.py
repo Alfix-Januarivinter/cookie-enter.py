@@ -1,4 +1,4 @@
-# Cookie-enter.py Version 1.1.8 (Bug fixes!)
+# Cookie-enter.py Version 1.1.8.1 (Bug fixes!)
 # If you encounter any bugs/issues, please contact the developer at:
 # https://github.com/Alfix-Januarivinter/cookie-enter.py
 
@@ -11,7 +11,7 @@ pygame.mixer.init()
 
 # Save file
 SAVE_FILE = "cookie_save.json"
-GAME_VERSION = "1.1.8"
+GAME_VERSION = "1.1.8.1"
 INCOMPATIBLE_VERSIONS = ["1.1.1", "1.1.2", "1.1.3b", "1.1.3"]
 
 # Constants and Variables
@@ -137,7 +137,12 @@ def update_display():
                 full_cost, _ = UPGRADE_OPTIONS[entry["key"]]
                 unlock_cost = full_cost // 10
                 if cookies >= unlock_cost:
-                    btn.config(state=tk.NORMAL, bg="#ffeb3b", fg="black")
+                    btn.config(
+                        state=tk.NORMAL,
+                        bg="#ffeb3b",
+                        fg="black",
+                        activebackground="#fff176",
+                    )
                 else:
                     btn.config(state=tk.DISABLED, fg="darkgray", bg="gray")
             else:
@@ -197,7 +202,12 @@ def update_display():
                             ascending_multiplier >= tier["asc"]
                             and cookies >= tier["unlock_cookies"]
                         ):
-                            btn.config(state=tk.NORMAL, bg="#ffeb3b", fg="black")
+                            btn.config(
+                                state=tk.NORMAL,
+                                bg="#ffeb3b",
+                                fg="black",
+                                activebackground="#fff176",
+                            )
                         else:
                             btn.config(state=tk.DISABLED, fg="darkgray", bg="gray")
                         break
@@ -266,6 +276,10 @@ def apply_theme_to_window(window):
         if isinstance(widget, tk.Label):
             widget.config(bg=theme["label_bg"], fg=theme["fg"])
         elif isinstance(widget, tk.Button):
+            text = widget.cget("text")
+            current_bg = widget.cget("bg")
+            if "Unlock" in text or current_bg == "#ffeb3b":
+                continue
             widget.config(bg=theme["button_bg"], fg=theme["fg"])
 
 
@@ -348,10 +362,6 @@ def open_upgrade_menu():
                 pady=6,
                 command=lambda k=key: [play_sound("click.mp3"), unlock_multiplier(k)],
             )
-            if cookies >= unlock_cost:
-                btn.config(state=tk.NORMAL, bg="#ffeb3b", fg="black")
-            else:
-                btn.config(state=tk.DISABLED, fg="darkgray", bg="gray")
 
         btn.pack(pady=10)
         upgrade_buttons.append(
@@ -462,10 +472,12 @@ def open_autoclicker_menu():
                 btn_state = tk.NORMAL
                 bg_color = "#ffeb3b"
                 fg_color = "black"
+                active_color = "#fff176"
             else:
                 btn_state = tk.DISABLED
                 bg_color = "gray"
                 fg_color = "darkgray"
+                active_color = None
 
             btn = tk.Button(
                 win,
@@ -479,6 +491,8 @@ def open_autoclicker_menu():
                 fg=fg_color,
                 command=lambda idx=i: [play_sound("click.mp3"), unlock_cps_tier(idx)],
             )
+            if active_color:
+                btn.config(activebackground=active_color)
 
         btn.pack(pady=10)
         cps_upgrade_buttons.append(btn)
@@ -554,7 +568,7 @@ def max_cps_upgrade():
         cps += extra_cps
         play_sound("upgrade.mp3")
         status_label.config(text=f"+{extra_cps} CPS from max upgrade!", fg="green")
-        open_autoclicker_menu()
+        update_display()
     else:
         status_label.config(text="Not enough cookies for max CPS!", fg="red")
 
